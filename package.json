@@ -17,6 +17,15 @@
   },
   "homepage": "https://github.com/JhonAlexGS/Autenticacion_Microservicio_Redis#readme",
   "dependencies": {
-    "express": "^4.19.2"
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "decrypt": "^0.0.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "nanoid": "^3.0.0",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "faker": "^6.6.6"
   }
 }
