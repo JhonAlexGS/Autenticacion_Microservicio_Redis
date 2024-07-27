@@ -23,7 +23,7 @@ async function upsert(tabla, data) {
     console.log(db)
 }
 
-async function remove(tabla, id) {
+async function remove(tabla, id) { 
     return true;
 }
 

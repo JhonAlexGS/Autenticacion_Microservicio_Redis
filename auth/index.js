@@ -6,15 +6,20 @@ function sign (data) {
     return jwt.sign(data, secret)
 }
 
-const check = {
-    own: function(req, owner) {
-        const decoded = decodeHeader(req);
-        console.log(decoded)
-    }
-}
-
 function verify (token) {
     return jwt.verify(token, secret)
+}
+
+const check = {
+    own: function(req, owner) {
+        
+        const decoded = decodeHeader(req);
+        console.log(decoded)
+        // Aquí se comprueba si es propio
+        if (decoded.id !== owner ){
+            throw new Error("No puedes hacer esto")
+        }
+    }
 }
 
 function getToken (auth) {
@@ -26,18 +31,19 @@ function getToken (auth) {
         throw new Error('Formato invalido')
     }
 
-    let token = auth.replace('Bearer', '')
+    let token = auth.replace('Bearer ', '')
     return token;
 }
 
-function decodeHeader () {
+function decodeHeader (req) {
     const authorization = req.headers.authorization || '';
     const token = getToken(authorization);
-    const decoded = jwt.verify(token);
+    const decoded = verify(token);
     req.user = decoded;
     return decoded;
 }
 
 module.exports = {
     sign,
+    check
 };
