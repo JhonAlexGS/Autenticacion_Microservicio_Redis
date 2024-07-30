@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const auth = require('../../../auth');
-const TABLA = 'auth';
+
+const TABLA = 'authNode';
 
 module.exports = function(injectedStore) {
 
@@ -11,6 +12,10 @@ module.exports = function(injectedStore) {
 
     async function login(username, password){
         const data = await store.query(TABLA, {username:username})
+        console.log(username)
+        console.log(password)
+        console.log(data.password)
+        console.log(await bcrypt.compare(password, data.password))
 
         return bcrypt.compare(password, data.password)
         .then(sonIguales =>{
