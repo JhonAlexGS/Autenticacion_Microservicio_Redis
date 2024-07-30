@@ -6,6 +6,7 @@ const Controller = require('./index');
 const router = express.Router();
 
 router.post('/login', function(req, res){
+    console.log("Logueando")
     Controller.login(req.body.username, req.body.password)
         .then(token => {
             response.success(req, res, token, 200)
