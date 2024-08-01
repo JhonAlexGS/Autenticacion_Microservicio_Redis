@@ -19,6 +19,10 @@ module.exports = function(injectedStore) {
     }
 
     async function upsert(body){
+
+        console.log("Vamos bien")
+        console.log("\n\n\n\n\n")
+
         const user = {
             name: body.name,
             username: body.username
@@ -30,6 +34,8 @@ module.exports = function(injectedStore) {
             user.id = nanoid();
         }
 
+        console.log("Vamos regular")
+        console.log("\n\n\n\n\n")
         if (body.password || body.username){
             await auth.upsert({
                 id:user.id,
@@ -37,7 +43,9 @@ module.exports = function(injectedStore) {
                 password: body.password
             })
         }
-
+        
+        console.log("Vamos mas bien")
+        console.log("\n\n\n\n\n")
         return store.upsert(TABLA, user)
     }
 
@@ -48,10 +56,19 @@ module.exports = function(injectedStore) {
         });
     }
 
+    async function following(id){
+        const join={}
+        join[TABLA]='user_to';
+        console.log(join);
+        console.log(id);
+        return store.followers(id);
+    }
+
     return {
         list,
         get,
         upsert,
-        follow
+        follow,
+        following
     };
 }
