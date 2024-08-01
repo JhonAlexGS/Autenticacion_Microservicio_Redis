@@ -44,7 +44,7 @@ function list(table) {
 
 function get(table, id) {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT * FROM ${table} WHERE id=${id}`, (err, data) => {
+        connection.query(`SELECT * FROM ${table} WHERE id="${id}"`, (err, data) => {
             if (err) return reject(err);
             resolve(data);
         })
@@ -52,7 +52,6 @@ function get(table, id) {
 }
 
 function insert(table, data) {
-    console.log("Ejecutando inserción")
     return new Promise((resolve, reject) => {
         connection.query(`INSERT INTO ${table} SET ?`, data, (err, result) => {
             if (err) return reject(err);
@@ -62,7 +61,6 @@ function insert(table, data) {
 }
 
 function update(table, data) {
-    console.log("Ejecutando actualizacion")
     return new Promise((resolve, reject) => {
         connection.query(`UPDATE ${table} SET ? WHERE id=?`, [data, data.id], (err, result) => {
             if (err) return reject(err);
@@ -76,7 +74,6 @@ const upsert = async (table, data) => {
     if(data.id){
         row = await get(table, data.id)
     }
-    
     if (row.length === 0) {
       return insert(table, data);
     } else {
@@ -84,7 +81,16 @@ const upsert = async (table, data) => {
     }
 }
 
-function query(table, query){
+function query(table, query, join){
+    
+    // let joinQuery='';
+    
+    // if(join){
+    //     const key=Object.keys(join)[0];
+    //     const val=join[key];
+    //     joinQuery=`JOIN ${key} ON ${table}.${val} = ${key}.id`;
+    // }
+
     return new Promise((resolve, reject) => {
         connection.query(`SELECT * FROM ${table} WHERE ?`, query,(error, result)=>{
             if(error) return reject(error)
@@ -101,9 +107,27 @@ function query(table, query){
     })
 }
 
+function followers(id){
+
+    const queryFollowers = `
+        SELECT distinct user_to, name, username FROM userNode_follow 
+            inner join userNode on userNode_follow.user_to = userNode.id
+            where user_to = '${id}'
+        `;
+
+    return new Promise((resolve, reject) => {
+        connection.query(queryFollowers, (err, data) => {
+            if (err) return reject(err);
+            resolve(data);
+        })
+    })
+
+}
+
 module.exports = {
     list,
     get,
     upsert,
-    query
+    query,
+    followers
 };
