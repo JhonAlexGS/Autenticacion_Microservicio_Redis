@@ -55,7 +55,7 @@ module.exports = function(injectedStore) {
     
         return store.followers(id);
     }
-
+    
     return {
         list,
         get,
