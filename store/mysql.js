@@ -126,8 +126,9 @@ function followers(id){
 
 module.exports = {
     list,
+    insert,
     get,
     upsert,
     query,
-    followers
+    followers,
 };
